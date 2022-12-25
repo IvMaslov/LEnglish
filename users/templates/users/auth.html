@@ -1,0 +1,84 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block import %}
+<link rel="stylesheet" href="{% static 'main/css/checkbox.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<section class="registration_form m-5">
+	<div class="container border text-center">
+<!-- 		<div class="row m-5 align-items-center">
+			<div class="col-4">
+				<div class="text-white text-end">
+					<h2 for="nicknameFormControl">Nickname</h2>
+				</div>
+			</div>
+			<div class="col-4">
+				<input class="form-control" id="nicknameFormControl" type="text" placeholder="nickname" aria-label=".form-control-lg example">
+			</div>
+			<div class="col-4 checkbox">
+				<input type="checkbox" id="toggle" value="" aria-label="Checkbox for following text input">
+			</div>
+		</div> -->
+
+		<div class="row m-5 align-items-center">
+			<div class="col-4">
+				<div class="text-white text-end">
+					<h2 for="emailFormControl">Email</h2>
+				</div>
+			</div>
+			<div class="col-4">
+				<input type="email" class="form-control" id="emailFormControl" placeholder="name@example.com">
+			</div>
+		</div>
+
+		<div class="row m-5 align-items-center">
+			<div class="col-4">
+				<div class="text-white text-end">
+					<h2 for="passwordFormControl">Password</h2>
+				</div>
+			</div>
+			<div class="col-4">
+				<input type="email" class="form-control" id="passwordFormControl" placeholder="password">
+			</div>
+		</div>
+
+		<div class="row m-5 align-items-center">
+			<div class="col-12">
+				<button type="button" onclick="authenticateUser()" class="btn btn-warning ps-5 pe-5" id="registrationButton">Sign In</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% csrf_token %}
+<script type="text/javascript">
+	const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+	async function authenticateUser() {
+		let url = new URL(window.location.href);
+		let nickname = "";//document.getElementById("nicknameFormControl").value;
+		let email = document.getElementById("emailFormControl").value;
+		let password = document.getElementById("passwordFormControl").value;
+
+		let response = await fetch(url, {
+			method: "POST",
+			headers:{
+				"X-CSRFToken": csrftoken,
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify({"email": email, "nickname": nickname, "password": password})
+		});
+		response_data = await response.json();
+		console.log(response_data);
+
+		if(response_data.status == "0")
+			window.location.href = response_data.url;
+		else
+			console.log("Wrong data!");
+	}
+</script>
+
+{% endblock %}

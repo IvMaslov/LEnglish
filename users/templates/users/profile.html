@@ -1,0 +1,25 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+{% if user_found %}
+	{% for field in user_fields %}
+		<h5 class="text-white">
+			{{ field }}
+		</h5>
+	{% endfor %}
+
+{% else %}
+
+<div class="container">
+	<div class="row m-5">
+		<div class="col text-white text-center">
+			<h1>User not found</h1>
+		</div>
+	</div>
+</div>
+
+
+{% endif %}
+
+{% endblock %}
