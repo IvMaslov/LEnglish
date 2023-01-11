@@ -33,7 +33,7 @@ class LevelView(AuthMixin, DataMixin, View):
 		obj = get_object_or_404(Levels, slug=slug_id)
 
 		words = Words.objects.filter(word_category=obj.id)
-		random_4_words = sample(words, k=4)
+		random_4_words = sample(list(words), k=4)
 
 		if not reverse:
 			random_4_words = [{"word":elem.word, "translate":elem.translate.split(",")[0]} for elem in random_4_words]
